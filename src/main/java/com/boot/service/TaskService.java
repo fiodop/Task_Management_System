@@ -1,9 +1,7 @@
 package com.boot.service;
 
 import com.boot.entity.Task;
-import com.boot.entity.User;
 import com.boot.repository.TaskRepository;
-import com.boot.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +10,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class TaskService {
-    private final UserService userService;
+    private final AppUserService appUserService;
     private final TaskRepository taskRepository;
 
     /**
@@ -22,7 +20,7 @@ public class TaskService {
      * @return list of tasks
      */
     public List<Task> getTasksByUsername(String username) {
-        var user = userService.getByUsername(username);
+        var user = appUserService.getByUsername(username);
 
         return taskRepository.findAllByUser(user);
     }
@@ -38,8 +36,8 @@ public class TaskService {
     }
 
     public void add(Task task, String username) {
-        var user = userService.getByUsername(username);
-        task.setUser(user);
+        var user = appUserService.getByUsername(username);
+        task.setAppUser(user);
         taskRepository.save(task);
     }
 }

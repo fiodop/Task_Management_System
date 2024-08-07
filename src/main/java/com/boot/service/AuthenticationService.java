@@ -3,7 +3,7 @@ package com.boot.service;
 import com.boot.DTO.JwtAuthenticationResponse;
 import com.boot.DTO.SignInRequest;
 import com.boot.DTO.SignUpRequest;
-import com.boot.entity.User;
+import com.boot.entity.AppUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class AuthenticationService {
-    private final UserService userService;
+    private final AppUserService appUserService;
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
@@ -26,13 +26,13 @@ public class AuthenticationService {
      * @return jwt
      */
     public JwtAuthenticationResponse signUp(SignUpRequest request){
-        var user = User.builder()
+        var user = AppUser.builder()
                 .username(request.getUsername())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .build();
 
-        userService.create(user);
+        appUserService.create(user);
 
         var jwt = jwtService.generateToken(user);
         return new JwtAuthenticationResponse(jwt);
@@ -45,7 +45,7 @@ public class AuthenticationService {
                 request.getPassword()
         ));
 
-        var user = userService
+        var user = appUserService
                 .userDetailsService()
                 .loadUserByUsername(request.getUsername());
 

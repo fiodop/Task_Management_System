@@ -5,7 +5,7 @@ import com.boot.entity.Task;
 import com.boot.service.CommentService;
 import com.boot.service.JwtService;
 import com.boot.service.TaskService;
-import com.boot.service.UserService;
+import com.boot.service.AppUserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +21,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TaskController {
     private final TaskService taskService;
-    private final UserService userService;
+    private final AppUserService appUserService;
     private final JwtService jwtService;
     private final CommentService commentService;
 
@@ -31,7 +31,7 @@ public class TaskController {
         if(header != null && header.startsWith("Bearer ")){
             var token = header.substring(7);
             var username = jwtService.extractUsername(token);
-            UserDetails userDetails = userService.getByUsername(username);
+            UserDetails userDetails = appUserService.getByUsername(username);
             if(jwtService.isTokenValid(token, userDetails)){
             try {
                 List<Task> tasks = taskService.getTasksByUsername(username);
@@ -50,7 +50,7 @@ public class TaskController {
         if(header != null && header.startsWith("Bearer ")) {
             var token = header.substring(7);
             var username = jwtService.extractUsername(token);
-            UserDetails userDetails = userService.getByUsername(username);
+            UserDetails userDetails = appUserService.getByUsername(username);
             if (jwtService.isTokenValid(token, userDetails)) {
                 try {
                     List<Task> tasksToExecute = taskService.getTasksByExecutor(username);
@@ -69,7 +69,7 @@ public class TaskController {
         if(header != null && header.startsWith("Bearer ")) {
             var token = header.substring(7);
             var username = jwtService.extractUsername(token);
-            UserDetails userDetails = userService.getByUsername(username);
+            UserDetails userDetails = appUserService.getByUsername(username);
             if (jwtService.isTokenValid(token, userDetails)) {
                 try {
                     taskService.add(task, username);
@@ -86,10 +86,10 @@ public class TaskController {
         if(header != null && header.startsWith("Bearer ")){
             var token = header.substring(7);
             var username = jwtService.extractUsername(token);
-            UserDetails userDetails = userService.getByUsername(username);
+            UserDetails userDetails = appUserService.getByUsername(username);
             if(jwtService.isTokenValid(token, userDetails)) {
                 try {
-                    if (username.equals(task.getUser().getUsername())) {
+                    if (username.equals(task.getAppUser().getUsername())) {
                         taskService.add(task, username);
                     }
                 } catch (Exception e) {
@@ -107,7 +107,7 @@ public class TaskController {
         if(header != null && header.startsWith("Bearer ")){
             var token = header.substring(7);
             var usernameDetails = jwtService.extractUsername(token);
-            UserDetails userDetails = userService.getByUsername(usernameDetails);
+            UserDetails userDetails = appUserService.getByUsername(usernameDetails);
             if(jwtService.isTokenValid(token, userDetails)) {
                 try {
                     List<Task> tasks = taskService.getTasksByUsername(username);
@@ -127,7 +127,7 @@ public class TaskController {
         if(header != null && header.startsWith("Bearer "));
         var token = header.substring(7);
         var username = jwtService.extractUsername(token);
-        UserDetails userDetails = userService.getByUsername(username);
+        UserDetails userDetails = appUserService.getByUsername(username);
         if(jwtService.isTokenValid(token, userDetails)) {
             try {
                 commentService.add(comment);

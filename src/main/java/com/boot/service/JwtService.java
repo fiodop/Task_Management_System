@@ -1,6 +1,6 @@
 package com.boot.service;
 
-import com.boot.entity.User;
+import com.boot.entity.AppUser;
 import io.jsonwebtoken.Claims;
 
 import io.jsonwebtoken.Jwts;
@@ -41,9 +41,9 @@ public class JwtService {
      */
     public String generateToken(UserDetails userDetails){
         Map<String, Object> claims = new HashMap<>();
-        if(userDetails instanceof User customUserDetails){
-            claims.put("id", customUserDetails.getId());
-            claims.put("email", customUserDetails.getEmail());
+        if(userDetails instanceof AppUser customAppUserDetails){
+            claims.put("id", customAppUserDetails.getId());
+            claims.put("email", customAppUserDetails.getEmail());
         }
         return generateToken(claims, userDetails);
     }

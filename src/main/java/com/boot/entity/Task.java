@@ -22,6 +22,6 @@ public class Task {
     private String status;
     @JoinColumn(name = "user_id")
     @OneToOne
-    private User user;
+    private AppUser appUser;
     private String executor;
 }

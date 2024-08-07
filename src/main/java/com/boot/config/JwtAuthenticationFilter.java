@@ -1,7 +1,7 @@
 package com.boot.config;
 
 import com.boot.service.JwtService;
-import com.boot.service.UserService;
+import com.boot.service.AppUserService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -13,7 +13,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -26,7 +25,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     public static final String BEARER_PREFIX = "Bearer ";
     public static final String HEADER_NAME = "Authorization";
     private final JwtService jwtService;
-    private final UserService userService;
+    private final AppUserService appUserService;
 
     @Override
     protected void doFilterInternal(
@@ -44,7 +43,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         var username = jwtService.extractUsername(jwt);
 
         if(StringUtils.isNotEmpty(username) && SecurityContextHolder.getContext().getAuthentication() == null){
-            UserDetails userDetails = userService
+            UserDetails userDetails = appUserService
                     .userDetailsService()
                     .loadUserByUsername(username);
 

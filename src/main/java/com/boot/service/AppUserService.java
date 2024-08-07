@@ -1,7 +1,7 @@
 package com.boot.service;
 
-import com.boot.entity.User;
-import com.boot.repository.UserRepository;
+import com.boot.entity.AppUser;
+import com.boot.repository.AppUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -10,37 +10,37 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class UserService {
-    private final UserRepository userRepository;
+public class AppUserService {
+    private final AppUserRepository appUserRepository;
 
 
     /**
      * Saving user
      *
-     * @param user user
+     * @param appUser user
      * @return saved user
      */
-    public User save(User user){
-        return userRepository.save(user);
+    public AppUser save(AppUser appUser){
+        return appUserRepository.save(appUser);
     }
 
 
     /**
      * Creating user
      *
-     * @param user user
+     * @param appUser user
      * @return created user
      */
-    public User create(User user){
-        if(userRepository.existsByUsername(user.getUsername())){
+    public AppUser create(AppUser appUser){
+        if(appUserRepository.existsByUsername(appUser.getUsername())){
             throw new RuntimeException("User with this username exist");
         }
 
-        if (userRepository.existsByEmail(user.getEmail())){
+        if (appUserRepository.existsByEmail(appUser.getEmail())){
             throw new RuntimeException("User with this email is exist");
         }
 
-        return save(user);
+        return save(appUser);
     }
 
     /**
@@ -49,8 +49,8 @@ public class UserService {
      * @param username username
      * @return user
      */
-    public User getByUsername(String username){
-        return userRepository.findByUsername(username)
+    public AppUser getByUsername(String username){
+        return appUserRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 
@@ -63,7 +63,7 @@ public class UserService {
     public UserDetailsService userDetailsService(){
         return this::getByUsername;
     }
-    public User getCurrentUser(){
+    public AppUser getCurrentUser(){
         var username = SecurityContextHolder
                 .getContext()
                 .getAuthentication()
