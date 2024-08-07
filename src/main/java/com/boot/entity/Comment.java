@@ -7,21 +7,18 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
+@Table(name = "comments")
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "tasks")
-public class Task {
+@NoArgsConstructor
+public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private long id;
-    @Column(nullable = false)
-    private String header;
     private String describtion;
-    private String status;
-    @JoinColumn(name = "user_id")
-    @OneToOne
-    private User user;
-    private String executor;
+    private String user;
+    @JoinColumn(name = "task_id")
+    @ManyToOne
+    private Task task;
 }
