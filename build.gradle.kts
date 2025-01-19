@@ -37,6 +37,8 @@ dependencies {
     testImplementation("org.springframework.security:spring-security-test")
     testImplementation("io.rest-assured:rest-assured:5.5.0")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    implementation ("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0")
+
 
 }
 
