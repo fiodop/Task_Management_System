@@ -1,4 +1,4 @@
-package com.taskmanagementsystem.model.dto;
+package com.taskmanagementsystem.model.dto.auth;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,10 +9,9 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class RegisterRequest {
-    private String username;
-    private String email;
-    private String password;
+public class AuthenticationResponse {
+    private String token;
+
 
 
 }

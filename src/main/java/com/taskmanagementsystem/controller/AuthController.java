@@ -1,13 +1,15 @@
 package com.taskmanagementsystem.controller;
 
-import com.taskmanagementsystem.model.dto.AuthenticationRequest;
-import com.taskmanagementsystem.model.dto.AuthenticationResponse;
-import com.taskmanagementsystem.model.dto.RegisterRequest;
+import com.taskmanagementsystem.model.dto.auth.AuthenticationRequest;
+import com.taskmanagementsystem.model.dto.auth.AuthenticationResponse;
+import com.taskmanagementsystem.model.dto.auth.RegisterRequest;
 import com.taskmanagementsystem.service.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class AuthController {
     private final AuthService authService;
+    private final Logger logger = LoggerFactory.getLogger(AuthController.class);
 
     @Operation(
             summary = "register user",
@@ -31,6 +34,7 @@ public class AuthController {
             @RequestBody RegisterRequest request
 
     ){
+        logger.info("Register request: {}", request);
         return ResponseEntity.ok(authService.register(request));
     }
 

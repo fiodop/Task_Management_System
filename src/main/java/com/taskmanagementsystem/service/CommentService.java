@@ -33,8 +33,8 @@ public class CommentService {
         return Comment.builder()
                 .comment(commentDto.getComment())
                 .task(taskRepository
-                        .findById(commentDto.getId())
-                        .orElseThrow(() -> new TaskNotFoundException(String.format("Task with id %s not found", taskId)))
+                        .findById(commentDto.getTaskId())
+                        .orElseThrow(() -> new TaskNotFoundException(String.format("Task with id %s not found", commentDto.getId())))
                 )
                 .author(appUserRepository
                         .findByUsername(commentDto.getAuthorUsername())

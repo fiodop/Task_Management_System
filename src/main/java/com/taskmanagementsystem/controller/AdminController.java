@@ -8,8 +8,11 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Tag(name = "admin controller api")
 @RestController
@@ -45,7 +48,7 @@ public class AdminController {
             @PathVariable long taskId,
             @RequestBody TaskDto taskDto
     ){
-        return ResponseEntity.ok(taskService.update(taskId, taskDto));
+        return ResponseEntity.ok(taskService.update(taskDto));
     }
 
     @Operation(
@@ -62,8 +65,9 @@ public class AdminController {
         return ResponseEntity.ok(commentService.save(commentDto));
     }
 
+
     @Operation(
-            summary = "delete task",
+            summary = "Delete task",
             responses = {
                     @ApiResponse(responseCode = "200", description = "task successfully deleted"),
                     @ApiResponse(responseCode = "400", description = "Request contains incorrect data")
@@ -77,11 +81,52 @@ public class AdminController {
         return ResponseEntity.ok("Deleted");
     }
 
+
+    @Operation(
+            summary = "Delete comment",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Comment deleted")
+            }
+    )
     public ResponseEntity<String> deleteComment(
             @PathVariable long commentId
     ){
         commentService.delete(commentId);
         return ResponseEntity.ok("Deleted");
     }
+    @Operation(
+            summary = "Get tasks by author username, num and size of page",
+            responses = {
+                    @ApiResponse(responseCode = "200"),
+                    @ApiResponse(responseCode = "400", description = "Request contains incorrect data")
+            }
+    )
+    @GetMapping("/tasks-by-author")
+    public ResponseEntity<List<TaskDto>> getTasksByAuthor(
+            @RequestParam String authorUsername,
+            @RequestParam(required = false, defaultValue = "0") int page,
+            @RequestParam(required = false, defaultValue = "10") int size
+    ) {
+        return ResponseEntity.ok(taskService
+                .getTasksByAuthorUsername(authorUsername, (PageRequest.of(page, size))));
+    }
+
+    @Operation(
+            summary = "Get tasks by assignee username, num and size page",
+            responses = {
+                    @ApiResponse(responseCode = "200"),
+                    @ApiResponse(responseCode = "400", description = "Request contains incorrect data")
+            }
+    )
+    @GetMapping("/tasks-by-assignee")
+    public ResponseEntity<List<TaskDto>> getTasksByAssignee(
+            @RequestParam String assigneeUsername,
+            @RequestParam(required = false, defaultValue = "0") int page,
+            @RequestParam(required = false, defaultValue = "10") int size
+    ){
+        return ResponseEntity.ok(taskService
+                .getTasksByAssigneeUsername(assigneeUsername, PageRequest.of(page, size)));
+    }
+
 
 }

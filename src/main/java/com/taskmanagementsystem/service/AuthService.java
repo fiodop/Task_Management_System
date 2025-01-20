@@ -1,8 +1,8 @@
 package com.taskmanagementsystem.service;
 
-import com.taskmanagementsystem.model.dto.AuthenticationRequest;
-import com.taskmanagementsystem.model.dto.AuthenticationResponse;
-import com.taskmanagementsystem.model.dto.RegisterRequest;
+import com.taskmanagementsystem.model.dto.auth.AuthenticationRequest;
+import com.taskmanagementsystem.model.dto.auth.AuthenticationResponse;
+import com.taskmanagementsystem.model.dto.auth.RegisterRequest;
 import com.taskmanagementsystem.model.entity.AppUser;
 import com.taskmanagementsystem.model.enums.Role;
 import com.taskmanagementsystem.repository.AppUserRepository;
